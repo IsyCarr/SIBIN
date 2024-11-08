@@ -110,4 +110,6 @@ RedimensionarLogo= Cargar_Logo.resize((100,100),Image.LANCZOS)
 AdaptarLogo= ImageTk.PhotoImage(RedimensionarLogo)
 Logo= canvas.create_image(30,30,image=AdaptarLogo, anchor="nw")
 
+#Titulo = canvas.create_text(230,80,text= "SISTEMA DE \nINVENTARIO PARA \nBIENES NACIONALES \n(SIBIN)", fill="White", font=("Arial", 12, "bold"))
+
 ventanaP.mainloop()

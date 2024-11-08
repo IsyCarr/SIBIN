@@ -12,7 +12,7 @@ def CambiarTamano(event):
     Redimensionar = Tamano.resize((Ancho, Alto), Image.LANCZOS)
     Fondo = ImageTk.PhotoImage(Redimensionar)
     canvas.create_image(0, 0, image=Fondo, anchor=tk.NW)
-    canvas.image_fondo = Fondo  # Guardamos la referencia de la imagen para evitar que se borre
+    canvas.image = Fondo  # Guardamos la referencia de la imagen para evitar que se borre
 
     """
     #Metodo para sobreescribir encima del canvas"
@@ -30,10 +30,11 @@ def CambiarTamano(event):
     """
     #Mostrar elementos  en el canvas
     MostrarCanvas(canvas, Cerrar, Mini, linea, Degradado, Degradado2, Degradado3, Degradado4,Degradado5,Degradado6,Logo)
-
+    
+    
     # coordenadas de los botones de cerrar y minimizar
-    canvas.coords(Cerrar, Ancho - 30, 10)
-    canvas.coords(Mini, Ancho - 55, 5)
+    canvas.coords(Cerrar, Ancho - 20, 20)
+    canvas.coords(Mini, Ancho - 45, 15)
 
 def cerrarVen(event):
     ventanaP.destroy()
@@ -82,25 +83,12 @@ Tamano = Image.open("Fondo.png")
 canvas = tk.Canvas(ventanaP, highlightthickness=0)
 canvas.pack(fill=tk.BOTH, expand=True)
 
-# Crear imagen de texto "X" para el botón de cerrar
-text_image = Image.new("RGBA", (20, 50), (255, 0, 0, 0))
-draw = ImageDraw.Draw(text_image)
-font = ImageFont.truetype("arialbd.ttf", 20)
-draw.text((5, 0), "X", font=font, fill=(255, 255, 255, 255))
-text_photo = ImageTk.PhotoImage(text_image)
-Cerrar = canvas.create_image(0, 0, anchor="nw", image=text_photo)
-# Vincular la acción de cerrar ventana al hacer clic en la "X"
+#Crear un texto "X" para el boton de cerrar
+Cerrar= canvas.create_text(0,0,text="X",fill="white", font=("arial", 14, "bold"))
 canvas.tag_bind(Cerrar, "<Button-1>", cerrarVen)
-
-# Crear imagen de texto "-" para el botón de minimizar
-text_image2 = Image.new("RGBA", (20, 50), (255, 0, 0, 0))
-draw2 = ImageDraw.Draw(text_image2)
-draw2.text((5, 0), "_", font=font, fill=(255, 255, 255, 255))
-text_photo2 = ImageTk.PhotoImage(text_image2)
-Mini = canvas.create_image(0, 0, anchor="nw", image=text_photo2)
-# Vincular la acción de cerrar ventana al hacer clic en la "-"
+#Crear un texto "-" para el boton de minimizar
+Mini = canvas.create_text(0,0,text="_",fill="white", font=("arial", 14, "bold"))
 canvas.tag_bind(Mini, "<Button-1>", miniVen)
-
 
 ventanaP.bind("<Configure>", CambiarTamano)
 ventanaP.bind("<Map>", on_state_change)
@@ -150,10 +138,13 @@ Degradado4 = canvas.create_image(321, 0, anchor="nw", image=text_photo7)
 Degradado5 = canvas.create_image(322, 0, anchor="nw", image=text_photo8)
 Degradado6 = canvas.create_image(323, 0, anchor="nw", image=text_photo9)
 
+#Cragar imagen de logo y redimensionarla para mostrar
 Cargar_Logo=Image.open("Logo.jpg")
 RedimensionarLogo= Cargar_Logo.resize((100,100), Image.LANCZOS)
 AdaptarLogo= ImageTk.PhotoImage(RedimensionarLogo)
 Logo= canvas.create_image(30,30,image=AdaptarLogo, anchor="nw")
+
+Sistema= canvas.create_text(230,80,text="SISTEMA DE \nINVENTARIO PARA \nBIENES NACIONALES \n(SIBIN)",fill="white", font=("arial", 12, "bold"), justify='center')
 
 """
 # Crear imagen de texto codigo
