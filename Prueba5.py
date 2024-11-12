@@ -5,6 +5,7 @@ from tkcalendar import Calendar
 from datetime import  datetime, timedelta
 
 
+
 def MostrarCanvas(canvas, *elementos):
     for elemento in elementos:
         canvas.tag_raise(elemento)
@@ -17,11 +18,11 @@ def CambiarTamano(event):
     Fondo = ImageTk.PhotoImage(Redimensionar)
     canvas.create_image(0, 0, image=Fondo, anchor=tk.NW)
     canvas.image = Fondo  # Guardamos la referencia de la imagen para evitar que se borre
-
+    
     #Mostrar elementos en el canvas
-    MostrarCanvas(canvas, Cerrar, Mini,Logo, linea, Degradado, Degradado2,Degradado3,Degradado4, Degradado5,
+    MostrarCanvas(canvas, Home, Cerrar, Mini,Logo, linea, Degradado, Degradado2,Degradado3,Degradado4, Degradado5,
                   Degradado6, Sistema, Subtitulo1, Subtitulo2,Subtitulo3,Subtitulo4, Subtitulo5,Subtitulo6, Subtitulo7,Subtitulo8,Subtitulo9, 
-                    Calendario)
+                    Calendario, Subtitulo10, Login)
     
     # coordenadas de los botones de cerrar y minimizar
     canvas.coords(Cerrar, Ancho - 20, 20)
@@ -65,7 +66,6 @@ def crear_text_image(width):
 def CrearCuadroTxt (ejeX, ejeY, ancho):
     #Crear un cuadro de texto para ingresar datos
     Ingreso=tk.Entry(width=ancho, font=("Arial", 14))
-    #canvas.create_window(ejeX, ejeY, window=Ingreso, height= 30)
     Ingreso.place(x=ejeX, y=ejeY, height=30)
     return Ingreso
 
@@ -118,9 +118,6 @@ def limpiar_campos():
     Lista.set('')
     Lista2.set('')
     Lista3.set('')
-
-    # Limpiar el campo de fecha del calendario
-    #cal.selection_clear()  # Esto no es necesario si solo se quiere limpiar el Entry asociado
 
     # Si tienes un Entry para mostrar la fecha seleccionada, también lo puedes limpiar
     cuadro_texto2.config(state='normal')
@@ -182,6 +179,18 @@ RedimensionarLogo= Cargar_Logo.resize((100,100), Image.LANCZOS)
 AdaptarLogo= ImageTk.PhotoImage(RedimensionarLogo)
 Logo= canvas.create_image(30,30,image=AdaptarLogo, anchor="nw")
 
+#Cargar imagen de home y redimensionarla para mostrar
+Cargar_Home=Image.open("Home.png")
+RedimensionarHome= Cargar_Home.resize((30,30), Image.LANCZOS)
+AdaptarHome= ImageTk.PhotoImage(RedimensionarHome)
+Home = canvas.create_image(450,26,image=AdaptarHome, anchor="nw")
+
+#Cargar imagen de Login y redimensionarla para mostrar
+Cargar_Login=Image.open("Usuario2.png")
+RedimensionarLogin= Cargar_Login.resize((30,30), Image.LANCZOS)
+AdaptarLogin= ImageTk.PhotoImage(RedimensionarLogin)
+Login= canvas.create_image(1600,20,image=AdaptarLogin, anchor="nw")
+
 #Crear titulo del sistema
 Sistema= canvas.create_text(230,80,text="SISTEMA DE \nINVENTARIO PARA \nBIENES NACIONALES \n(SIBIN)",fill="white", font=("arial", 13, "bold"), justify='center')
 #Crear los sub-titulos
@@ -194,6 +203,7 @@ Subtitulo6= canvas.create_text(550,490,text="SERIAL: ",fill="white", font=("aria
 Subtitulo7= canvas.create_text(1050,490,text="FOTO: ",fill="white", font=("arial", 18, "bold"))
 Subtitulo8= canvas.create_text(550,610,text="FECHA DE \nREGISTRO: ",fill="white", font=("arial", 18, "bold"))
 Subtitulo9= canvas.create_text(1150,610,text="CATEGORIA: ",fill="white", font=("arial", 18, "bold"))
+Subtitulo10= canvas.create_text(1000,100,text="REGISTRO DE BIENES NACIONALES",fill="white", font=("arial", 24, "bold"))
 
 #Crear los campos de texto, mediante llamado a la función "CrearCuadroText"
 Producto =CrearCuadroTxt(653,355, 33)
@@ -220,7 +230,7 @@ cuadro_texto = tk.Entry(canvas, width=35, font=("Arial",10))
 cuadro_texto.place(x=1110, y=475, height=30)  # Añadir un poco de espacio vertical
 cuadro_texto.config(state="readonly")
 # Crear un botón para cargar la imagen
-boton_cargar = tk.Button(canvas, text="Cargar Imagen", command=cargar_imagen, width=14, bg="red4",  fg="white", font=("Arial", 14), cursor="hand2", relief="sunken", border=5)
+boton_cargar = tk.Button(canvas, text="Cargar Imagen", command=cargar_imagen, width=14, bg="red4",  fg="white", font=("Arial", 14), cursor="hand2", relief="raised", border=5)
 boton_cargar.place(x=1360, y=471, height=38)  # Añadir un poco de espacio vertical
 # Crear una etiqueta para mostrar la miniatura
 etiqueta_miniatura = tk.Label(ventanaP, height=80, width=80, bg="gray71")
@@ -246,11 +256,22 @@ cal = Calendar(canvas, selectmode='day', year=2024, month=11, day=1, date_patter
 canvas.tag_bind(Calendario, "<Button-1>", show_calendar)
 cal.bind("<<CalendarSelected>>", select_date)
 
-#Crea un boton quwe limpia las casillas de la ventana
-Limpiar= tk.Button(canvas, text="Limpiar", command=limpiar_campos, width=14, bg="red4",  fg="white", font=("Arial", 16), cursor="hand2", relief="sunken", border=5)
+#Crea un boton que limpia las casillas de la ventana
+Limpiar= tk.Button(canvas, text="Limpiar", command=limpiar_campos, width=14, bg="red4",  fg="white", font=("Arial", 16), cursor="hand2", relief="raised", border=5)
 Limpiar.place(x=1200, y=720, height=40)
 
+def mostrar_agregado():
+    MensajeExitoso.place(x=870, y=725)
+    ventanaP.after(1500, ocultar_etiqueta)
 
+def ocultar_etiqueta():
+    MensajeExitoso.place_forget()
+
+#Crea un boton que agregue la informacion de las casillas
+Limpiar= tk.Button(canvas, text="Agregar", command=mostrar_agregado, width=14, bg="red4",  fg="white", font=("Arial", 16), cursor="hand2", border=5, relief="raised")
+Limpiar.place(x=1430, y=720, height=40)
+# Crear el mensaje del guardado con exito
+MensajeExitoso= tk.Label(canvas, text="Se ha agregado correctamente", font=("Arial", 14), fg="white", bg="red4", border=5, width=25)
 
 ventanaP.mainloop()
 
